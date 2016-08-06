@@ -21,14 +21,16 @@ data_pac <- read.csv("activity.csv") ##data about Personal movement using ACtivi
 dates <- group_by(data_pac, date)
 
 data_sum_step <- summarise(dates, steps_in_day = sum(steps, na.rm = TRUE))
+png(filename = "plot1.png")
 plot(data_sum_step$date, data_sum_step$steps_in_day, type = "l", xlab="DATE", ylab="Number of steps", main = "Sum of steps in Day")
-
+dev.off()
 ##2.	If you do not understand the difference between a histogram and a barplot, 
 ## research the difference between them. 
 ## Make a histogram of the total number of steps taken each day
+png(filename = "plot2.png")
 hist(data_sum_step$steps_in_day, breaks = 50, xlab = "Number of steps in a Day", ylab = "Frequency", main = "Total Number of Steps") 
 #number of breaks is chosen for better distinguishability 
-
+dev.off()
 
 ##3.	Calculate and report the mean and median of the total number of steps taken per day
 mean_total_no_steps <- mean(data_sum_step$steps_in_day)
@@ -44,8 +46,9 @@ median_total_no_steps <- median(data_sum_step$steps_in_day)
 data_intervals <- group_by(data_pac, interval)
 
 data_mean_interval <- summarise(data_intervals, steps_in_interval = mean(steps, na.rm = TRUE))
+png(filename = "plot3.png")
 plot(data_mean_interval$interval, data_mean_interval$steps_in_interval, type = "l", xlab = "Time Interval", ylab = "Mean Number of Steps", main = "Mean Steps in Interval")
-
+dev.off()
 ##2. Which 5-minute interval, on average across all the days in the dataset, contains 
 ## the maximum number of steps?
 
@@ -81,7 +84,9 @@ impute_data_pac_dates <- group_by(impute_data_pac, date)
 
 ##
 impute_data_sum_step <- summarise(impute_data_pac_dates, steps_in_day = sum(steps, na.rm = TRUE))
+png(filename = "plot4.png")
 hist(impute_data_sum_step$steps_in_day)
+dev.off()
 
 mean_total_no_steps_imputed <- mean(impute_data_sum_step$steps_in_day)
 median_total_no_steps_imputed <- median(impute_data_sum_step$steps_in_day)
@@ -106,8 +111,11 @@ impute_data_pac$dayType <-  ifelse(pdate$wday %in% c(0,6), "weekday", "weekend")
 ## repository to see an example of what this plot should look like using simulated data.
 
 impute_data_pac_mean <- aggregate(steps ~ interval + dayType, data = impute_data_pac, mean)
+png(filename = "plot5.png")
 ggplot(impute_data_pac_mean, aes(interval, steps)) +
   geom_line() +
   facet_grid(dayType ~ .) +
   xlab("5-minute interval") +  
   ylab("avarage number of steps")
+
+dev.off()
